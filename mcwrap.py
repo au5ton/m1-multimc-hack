@@ -17,7 +17,8 @@ def this_dir():
 
 
 def lwjgl_jar_path():
-    return os.path.join(this_dir(), 'lwjglfat.jar')
+    return os.path.join(this_dir(), 'lwjglclasspath')
+    #return os.path.join(this_dir(), 'lwjglfat.jar')
 
 
 def m1_native_libs_dir():
@@ -35,7 +36,9 @@ def copy_native_libs(dest_dir):
 
 def rewrite_classpath(cp):
     jars = [j for j in cp.split(':') if 'lwjgl' not in j]
-    jars.append(lwjgl_jar_path())
+    for f in glob.glob('{}/*.jar'.format(lwjgl_jar_path())):
+        jars.append(f)
+    #jars.append(lwjgl_jar_path())
     logging.info('rewritten classpath: {}'.format(jars))
     return ':'.join(jars)
 
